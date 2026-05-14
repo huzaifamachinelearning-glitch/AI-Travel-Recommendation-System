@@ -1,0 +1,27 @@
+# AI Travel Advisor - Backend Dependencies
+# Pinned versions = reproducible builds = no "works on my machine" issues
+# This is what production teams do
+
+# Web Framework
+fastapi==0.115.0
+uvicorn[standard]==0.30.6    # WSGI server - NOT python main.py in production
+
+# Data validation (FastAPI uses this internally too)
+pydantic==2.9.2
+pydantic-settings==2.5.2     # For environment variable management
+
+# LLM
+groq==0.11.0
+
+# HTTP client (for async API calls)
+httpx==0.27.2
+
+# Environment variables
+python-dotenv==1.0.1
+
+# Utilities
+python-multipart==0.0.12     # For form data handling
+
+# --- OPTIONAL: Upgrade to real vector DB later ---
+# chromadb==0.5.0            # Vector database for real RAG
+# sentence-transformers==3.0.1  # For generating embeddings

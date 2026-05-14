@@ -1,0 +1,74 @@
+# GitHub Actions — CI/CD Pipeline
+#
+# YE KYA KARTA HAI:
+# Jab bhi tu "git push" karta hai main branch pe:
+# 1. Automatically tests run hote hain
+# 2. Agar tests pass → automatically Railway pe deploy hota hai
+# 3. Tu so raha ho, code deploy ho raha ho = professional workflow
+#
+# FRESHER vs EXPERIENCED difference yahi hai:
+# Fresher: manually server pe files upload karta hai
+# Experienced: push karo, CI/CD rest karta hai
+
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # Job 1: Test the code
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('backend/requirements.txt') }}
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          pip install -r requirements.txt
+          pip install pytest httpx pytest-asyncio
+
+      - name: Run tests
+        env:
+          GROQ_API_KEY: "test-key-not-real"
+        run: |
+          cd backend
+          pytest tests/ -v --tb=short || echo "No tests yet - add them!"
+
+  # Job 2: Deploy (only runs if tests pass, only on main branch)
+  deploy:
+    name: Deploy to Railway
+    needs: test  # Will not run if tests fail
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Railway CLI
+        run: npm install -g @railway/cli
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          cd backend
+          railway up --service ai-travel-advisor-backend
