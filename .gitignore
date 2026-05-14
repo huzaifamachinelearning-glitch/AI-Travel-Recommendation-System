@@ -1,9 +1,57 @@
-# .env  venv/  __pycache__/  *.pyc  .DS_Store  api_usage.json  .ipynb_checkpoints/ 
-.env
-venv/
+# ---- PYTHON ----
 __pycache__/
-*.pyc
-.DS_Store
-api_usage.json
+*.py[cod]
+*.pyo
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# ---- VIRTUAL ENVIRONMENTS ----
+venv/
+env/
+.venv/
+.env/
+ai_travel_recd/       # your old conda env
+
+# ---- ENVIRONMENT VARIABLES ---- KABHI PUSH MAT KARO
+.env
+.env.local
+.env.*.local
+
+# ---- DATA & MODELS (too large for git) ----
+*.csv
+*.npy
+*.pkl
+*.h5
+*.joblib
+data/
+models/
+visualizations/
+
+# Use Git LFS or cloud storage (S3/GDrive) for large files
+
+# ---- JUPYTER ----
 .ipynb_checkpoints/
-AI_travel_recd/
+*.ipynb   # optionally exclude notebooks from production branch
+
+# ---- IDEs ----
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ---- OS FILES ----
+.DS_Store
+Thumbs.db
+
+# ---- LOGS ----
+*.log
+logs/
+
+# ---- NODE (frontend) ----
+node_modules/
+.next/
+dist/
+build/
